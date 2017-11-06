@@ -19,7 +19,7 @@ build:
 	(git --git-dir=${source}/.git log -n 1 --pretty=format:%ct; echo; date -R >>revision.txt) >revision.txt
 	if quilt unapplied; then quilt push -a; fi
 	
-	#cd ${vendor_source}/CPAN && ./buildme.sh 
+	cd ${vendor_source}/CPAN && ./buildme.sh 
 	cd ${faad2_source} && ../vendor/CPAN/update-config.sh && mkdir -p ./build && ./configure --prefix=`pwd`/build --disable-shared && make install
 	cd ${vendor_source}/flac && ./buildme-linux.sh
 	cd ${vendor_source}/sox && ./buildme-linux.sh
