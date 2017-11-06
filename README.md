@@ -8,7 +8,7 @@ I attempted to achieve that, but it's like Perl developers haven't heard of "API
 How to build
 ============
 
-	git clone --recursive https://github.com/Uplink03/logitechmediaserver-deb.git
+	git clone --recursive https://github.com/crazzell/logitechmediaserver-deb.git
 	cd logitechmediaserver-deb
 	
 	dpkg-buildpackage -rfakeroot -b -us -uc
