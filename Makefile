@@ -23,6 +23,7 @@ build:
 	cd ${faad2_source} && ../vendor/CPAN/update-config.sh && mkdir -p ./build && ./configure --prefix=`pwd`/build --disable-shared && make install
 	cd ${vendor_source}/flac && ./buildme-linux.sh
 	cd ${vendor_source}/sox && ./buildme-linux.sh
+	cd ${vendor_source}/wavpack && ./build.sh
 	cd ${dsdplay_source}/src && unset LDFLAGS && make 
 
 PHONY: install
@@ -103,6 +104,7 @@ install:
 	cp -r ${vendor_source}/CPAN/build/${PerlVersion}/lib/perl5/${PerlArch}/ $(DESTDIR)/${share}/CPAN/arch/${PerlVersion}/
 	cp ${dsdplay_source}/src/build/dsdplay $(DESTDIR)/usr/share/squeezeboxserver/Bin/
 	cp ${faad2_source}/build/bin/faad $(DESTDIR)/usr/share/squeezeboxserver/Bin/
+	cp ${vendor_source}/wavpack/wvunpack $(DESTDIR)/usr/share/squeezeboxserver/Bin/
 	cp `/bin/tar zxvf ${vendor_source}/flac/flac-build-${Machine}-.tgz --wildcards *bin/flac` $(DESTDIR)/usr/share/squeezeboxserver/Bin/
 	cp `tar zxvf ${vendor_source}/sox/sox-build-${Machine}-.tgz --wildcards *bin/sox` $(DESTDIR)/usr/share/squeezeboxserver/Bin/
 
