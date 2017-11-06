@@ -7,18 +7,25 @@ varlib = var/lib/squeezeboxserver
 source = source/server
 platform_source = source/platforms
 vendor_source = source/vendor
+faad2_source = source/faad2-lms
+dsdplay_source = source/dsdplay
 
 PerlArch = $(shell perl -e 'use Config; print "$$Config{archname}\n";')
 PerlVersion = $(shell perl -e 'print substr($$^V, 1, 4)' )
+Machine = $(shell uname -m)
 
 .PHONY: build
 build:
 	(git --git-dir=${source}/.git log -n 1 --pretty=format:%ct; echo; date -R >>revision.txt) >revision.txt
 	if quilt unapplied; then quilt push -a; fi
 	
-	cd ${vendor_source}/CPAN && ./buildme.sh
-	
-.PHONY: install
+	#cd ${vendor_source}/CPAN && ./buildme.sh 
+	cd ${faad2_source} && ../vendor/CPAN/update-config.sh && mkdir -p ./build && ./configure --prefix=`pwd`/build --disable-shared && make install
+	cd ${vendor_source}/flac && ./buildme-linux.sh
+	cd ${vendor_source}/sox && ./buildme-linux.sh
+	cd ${dsdplay_source}/src && make 
+
+PHONY: install
 install:
 	# Create directories needed.
 	install -d -m0755 $(DESTDIR)/etc/default/
@@ -94,9 +101,10 @@ install:
 	
 	install -d -m0755 $(DESTDIR)/${share}/CPAN/arch/${PerlVersion}
 	cp -r ${vendor_source}/CPAN/build/${PerlVersion}/lib/perl5/${PerlArch}/ $(DESTDIR)/${share}/CPAN/arch/${PerlVersion}/
-	#mv $(tar zxvf faad2/faad2-build-armv7l-.tgz --wildcards *bin/faad) /usr/share/squeezeboxserver/Bin/arm-linux/
-	#mv $(tar zxvf flac/flac-build-armv7l-.tgz --wildcards *bin/flac) /usr/share/squeezeboxserver/Bin/arm-linux/
-	#mv $(tar zxvf sox/sox-build-armv7l-.tgz --wildcards *bin/sox) /usr/share/squeezeboxserver/Bin/arm-linux/
+	cp ${dsdplay_source}/src/build/dsdplay $(DESTDIR)/usr/share/squeezeboxserver/Bin/
+	cp ${faad2_source}/build/bin/faad $(DESTDIR)/usr/share/squeezeboxserver/Bin/
+	cp `/bin/tar zxvf ${vendor_source}/flac/flac-build-${Machine}-.tgz --wildcards *bin/flac` $(DESTDIR)/usr/share/squeezeboxserver/Bin/
+	cp `tar zxvf ${vendor_source}/sox/sox-build-${Machine}-.tgz --wildcards *bin/sox` $(DESTDIR)/usr/share/squeezeboxserver/Bin/
 
 .PHONY: clean
 clean:
