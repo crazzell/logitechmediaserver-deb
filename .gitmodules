@@ -10,3 +10,9 @@
 	path = source/platforms
 	url = https://github.com/Logitech/slimserver-platforms.git
 	branch = public/7.9
+[submodule "source/faad2-lms"]
+	path = source/faad2-lms
+	url = https://github.com/ralph-irving/faad2.git
+[submodule "source/dsdplay"]
+	path = source/dsdplay
+	url = https://github.com/SqueezeOnArch/dsdplay.git
