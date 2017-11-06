@@ -23,7 +23,7 @@ build:
 	cd ${faad2_source} && ../vendor/CPAN/update-config.sh && mkdir -p ./build && ./configure --prefix=`pwd`/build --disable-shared && make install
 	cd ${vendor_source}/flac && ./buildme-linux.sh
 	cd ${vendor_source}/sox && ./buildme-linux.sh
-	cd ${dsdplay_source}/src && make 
+	cd ${dsdplay_source}/src && unset LDFLAGS && make 
 
 PHONY: install
 install:
